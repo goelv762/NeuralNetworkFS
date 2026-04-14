@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ostream>
 #include <vector>
 
 struct Vec {
@@ -53,7 +54,15 @@ double operator*(const Vec& v1, const Vec& v2);
 Matrix operator+(const Matrix& m1, const Matrix& m2);
 Matrix operator*(const Matrix& m1, const Matrix& m2);
 
-// matrix & vector mix
+// matrix & something mix
 Matrix operator+(const Matrix& m, const Vec& v);
+Matrix operator*(const Matrix& m, const double& c);
+Matrix operator*(const double& c, const Matrix& m);
+
+// printing
+std::ostream& operator<<(std::ostream& os, const Vec& v);
+std::ostream& operator<<(std::ostream& os, const Matrix& m);
+
 
 Matrix transpose(const Matrix& m);
+Matrix randomMatrix(size_t rows, size_t cols);

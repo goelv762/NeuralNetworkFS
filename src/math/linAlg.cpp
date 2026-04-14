@@ -1,5 +1,7 @@
 #include "linAlg.hpp"
 #include <cstdio>
+#include <iomanip>
+#include <iostream>
 
 Vec operator+(const Vec& v1, const Vec& v2) {
 	Vec v3(v1.size());
@@ -89,6 +91,42 @@ Matrix operator+(const Matrix& m, const Vec& v) {
 	return r;
 }
 
+Matrix operator*(const Matrix& m, const double& c) {
+	Matrix r = m;
+	size_t rows = m.rows();
+	size_t cols = m.cols();
+
+	for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            r[i][j] *= c;
+        }
+    }
+
+	return r;
+}
+
+Matrix operator*(const double& c, const Matrix& m) {
+	return m * c;
+}
+
+std::ostream& operator<<(std::ostream& os, const Vec& v) {
+	for (const double& o : v) {
+		os << std::fixed << std::setprecision(4) << o << "\t";
+	}
+
+	os << std::endl;
+
+	return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Matrix& m) {
+	for (const Vec& v : m) {
+		os << v;
+	}
+
+	return os;
+}
+
 Matrix transpose(const Matrix& m) {
     size_t rows = m.rows();
    	size_t cols = m.cols();
@@ -102,5 +140,19 @@ Matrix transpose(const Matrix& m) {
     }
 
     return t;
+}
+
+Matrix randomMatrix(size_t rows, size_t cols) {
+	Matrix r(rows, cols);
+
+    for (size_t i = 0; i < rows; i++) {
+        for (size_t j = 0; j < cols; j++) {
+			// generate random number between 0 and 2
+			// subtract 1 to get between -1 and 1
+            r[i][j] = (double)rand() / (double)(RAND_MAX / 2) - 1.0f;
+        }
+    }
+
+	return r;
 }
 
