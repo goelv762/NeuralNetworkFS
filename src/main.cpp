@@ -4,16 +4,21 @@
 
 struct Layer {
 	Matrix W; // weight table
-	vec b; // biases
+	Vec b; // biases
 };
 
-vec neuronOutputs(vec& inputs, Layer& layer) {
-	return matrixMultiplication(inputs, layer.W) + layer.b;
+Matrix neuronOutputs(Matrix& inputs, Layer& layer) {
+	return inputs * transpose(layer.W) + layer.b;
 }
 
 int main (int argc, char *argv[]) {
 	// feature set
-	vec inputs = {1.0f, 2.0f, 3.0f, 2.5f};
+	Matrix inputs = {
+		{1, 2, 3, 2.5}, 
+		{2, 5, -1, 2}, 
+		{-1.5, 2.7, 3.3, -0.8}
+	};
+
 	Layer layer = {
 		// weights
 		{{0.2, 0.8, -0.5, 1},
@@ -23,9 +28,13 @@ int main (int argc, char *argv[]) {
 		{2.0f, 3.0f, 0.5f} 
 	};
 	
-	vec outputs = neuronOutputs(inputs, layer);
-	for (double& out : outputs) {
-		std::cout << out << " " << std::endl;
+	Matrix outputs = neuronOutputs(inputs, layer);
+	for (Vec& outVec : outputs) {
+		for (double& out : outVec) {
+			std::cout << out << "\t";
+		}
+
+		std::cout << std::endl;
 	}
 	
 	return 0;

@@ -1,7 +1,8 @@
 #include "linAlg.hpp"
+#include <cstdio>
 
-vec operator+(const vec& v1, const vec& v2) {
-	vec v3(v1.size());
+Vec operator+(const Vec& v1, const Vec& v2) {
+	Vec v3(v1.size());
 
 	for (size_t i = 0; i < v1.size(); i++) {
 		v3[i] = v1[i] + v2[i];
@@ -10,8 +11,28 @@ vec operator+(const vec& v1, const vec& v2) {
 	return v3;
 }
 
-double operator*(const vec& v1, const vec& v2) {
-	double dot;
+Vec& operator+=(Vec& v1, const Vec& v2) {
+	v1 = v1 + v2;
+	return v1;
+}
+
+Vec operator-(const Vec& v1, const Vec& v2) {
+	Vec v3(v1.size());
+
+	for (size_t i = 0; i < v1.size(); i++) {
+		v3[i] = v1[i] - v2[i];
+	}
+
+	return v3;
+}
+
+Vec& operator-=(Vec& v1, const Vec& v2) {
+	v1 = v1 - v2;
+	return v1;
+}
+
+double operator*(const Vec& v1, const Vec& v2) {
+	double dot = 0;
 
 	for (size_t i = 0; i < v1.size(); i++) {
 		dot += v1[i] * v2[i];
@@ -20,11 +41,59 @@ double operator*(const vec& v1, const vec& v2) {
 	return dot;
 }
 
-std::vector<vec> transpose(const std::vector<vec>& m) {
-    size_t rows = m.size();
-   	size_t cols = m[0].size();
 
-    std::vector<vec> t(cols, vec(rows));
+Matrix operator*(const Matrix& m1, const Matrix& m2) {
+	// assume that m1[0].size() == m2.size() "inner dimensions"
+	// NOTE, matrix multiplication is not commutative!
+	
+	size_t rows = m1.rows();
+	size_t cols = m2.cols();
+
+	Matrix p(rows, cols);
+
+	for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            p[i][j] = 0;
+
+            for (int k = 0; k < m1.cols(); k++) {
+                p[i][j] += m1[i][k] * m2[k][j];
+            }
+        }
+    }
+
+	return p;
+}
+
+Matrix operator+(const Matrix& m1, const Matrix& m2) {
+	size_t rows = m1.rows();
+	size_t cols = m2.cols();
+
+	Matrix r(rows, cols);
+
+	for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            r[i][j] = m1[i][j] + m2[i][j];
+        }
+    }
+
+	return r;
+}
+
+Matrix operator+(const Matrix& m, const Vec& v) {
+	// broadcasting ?
+	Matrix r = m;
+	for (Vec& c : r) {
+		c += v;
+	}
+
+	return r;
+}
+
+Matrix transpose(const Matrix& m) {
+    size_t rows = m.rows();
+   	size_t cols = m.cols();
+
+    Matrix t(cols, rows);
 
     for (size_t i = 0; i < rows; i++) {
         for (size_t j = 0; j < cols; j++) {
@@ -35,15 +104,3 @@ std::vector<vec> transpose(const std::vector<vec>& m) {
     return t;
 }
 
-
-vec matrixMultiplication(const vec& v, const Matrix& m) {
-	size_t size = m.size();
-
-	vec result(size);
-
-	for (size_t i = 0; i < size; i++) {
-		result[i] = v * m[i];
-	}
-
-	return result;
-}

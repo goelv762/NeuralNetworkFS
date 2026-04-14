@@ -2,12 +2,12 @@
 
 #include <vector>
 
-struct vec {
+struct Vec {
 	std::vector<double> data;
 
-    vec() = default;
-	vec(size_t size) : data(size) {}
-    vec(std::initializer_list<double> init) : data(init) {}
+    Vec() = default;
+	Vec(size_t size) : data(size) {}
+    Vec(std::initializer_list<double> init) : data(init) {}
 
     double& operator[](size_t i) { return data[i]; }
     const double& operator[](size_t i) const { return data[i]; }
@@ -21,10 +21,39 @@ struct vec {
     auto end()   const { return data.end(); }
 };
 
-using Matrix = std::vector<vec>;
 
-vec operator+(const vec& v1, const vec& v2);
-double operator*(const vec& v1, const vec& v2);
+struct Matrix {
+    std::vector<Vec> data;
 
-std::vector<vec> transpose(const Matrix& m);
-vec matrixMultiplication(const vec& v, const Matrix& m);
+    Matrix() = default;
+	Matrix(std::initializer_list<Vec> init) : data(init) {}
+    Matrix(size_t rows, size_t cols) : data(rows, Vec(cols)) {}
+
+    Vec& operator[](size_t i) { return data[i]; }
+    const Vec& operator[](size_t i) const { return data[i]; }
+
+    size_t rows() const { return data.size(); }
+    size_t cols() const { return data.empty() ? 0 : data[0].size(); }
+
+	auto begin() { return data.begin(); }
+    auto end()   { return data.end(); }
+
+    auto begin() const { return data.begin(); }
+    auto end()   const { return data.end(); }
+};
+
+// vectors
+Vec operator+(const Vec& v1, const Vec& v2);
+Vec& operator+=(Vec& v1, const Vec& v2);
+Vec operator-(const Vec& v1, const Vec& v2);
+Vec& operator-=(Vec& v1, const Vec& v2);
+double operator*(const Vec& v1, const Vec& v2);
+
+// matrix
+Matrix operator+(const Matrix& m1, const Matrix& m2);
+Matrix operator*(const Matrix& m1, const Matrix& m2);
+
+// matrix & vector mix
+Matrix operator+(const Matrix& m, const Vec& v);
+
+Matrix transpose(const Matrix& m);
