@@ -111,7 +111,7 @@ Matrix operator*(const double& c, const Matrix& m) {
 
 std::ostream& operator<<(std::ostream& os, const Vec& v) {
 	for (const double& o : v) {
-		os << std::fixed << std::setprecision(4) << o << "\t";
+		os << std::fixed << std::setprecision(10) << o << "\t";
 	}
 
 	os << std::endl;

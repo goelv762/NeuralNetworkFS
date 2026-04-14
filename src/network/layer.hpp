@@ -11,5 +11,6 @@ class DenseLayer {
 	void forward(const Matrix& inputs);
 };
 
-double reluActivation(const double& input);
+Matrix reluActivation(const Matrix& m);
+Matrix softmaxActivation(const Matrix& m);
 
