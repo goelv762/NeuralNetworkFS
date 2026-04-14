@@ -7,5 +7,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
 set(BASEPATH "${CMAKE_SOURCE_DIR}")
+file(GLOB_RECURSE MATH src/math/*.cpp)
+
+add_library(math SHARED ${MATH})
+set_target_properties(math PROPERTIES LINK_FLAGS "-static-libgcc -static-libstdc++")
 
 add_executable(${EXEC} src/main.cpp)
+target_link_libraries(${EXEC} math)
