@@ -1,4 +1,5 @@
 #include "linAlg.hpp"
+#include <algorithm>
 #include <cstdio>
 #include <iomanip>
 #include <iostream>
@@ -127,6 +128,15 @@ std::ostream& operator<<(std::ostream& os, const Matrix& m) {
 	return os;
 }
 
+double average(const Vec& v) {
+	double sum = 0;
+	for (const double& value : v) {
+		sum += value;
+	}
+
+	return sum / v.size();
+}
+
 Matrix transpose(const Matrix& m) {
     size_t rows = m.rows();
    	size_t cols = m.cols();
@@ -142,6 +152,18 @@ Matrix transpose(const Matrix& m) {
     return t;
 }
 
+Matrix clipMatrix(const Matrix& m, const double& bound) {
+	Matrix r = m;
+    for (size_t i = 0; i < m.rows(); i++) {
+        for (size_t j = 0; j < m.cols(); j++) {
+			r[i][j] = std::clamp(r[i][j], bound, 1 - bound);
+		}
+	}
+
+	return r;
+}
+
+
 Matrix randomMatrix(size_t rows, size_t cols) {
 	Matrix r(rows, cols);
 
@@ -155,4 +177,3 @@ Matrix randomMatrix(size_t rows, size_t cols) {
 
 	return r;
 }
-

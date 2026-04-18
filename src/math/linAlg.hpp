@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <ostream>
 #include <vector>
 
@@ -20,6 +21,8 @@ struct Vec {
 
     auto begin() const { return data.begin(); }
     auto end()   const { return data.end(); }
+
+	void push_back(double newData) { data.push_back(newData); }
 };
 
 
@@ -41,7 +44,10 @@ struct Matrix {
 
     auto begin() const { return data.begin(); }
     auto end()   const { return data.end(); }
+
+	void push_back(Vec newData) { data.push_back(newData); }
 };
+
 
 // vectors
 Vec operator+(const Vec& v1, const Vec& v2);
@@ -63,6 +69,9 @@ Matrix operator*(const double& c, const Matrix& m);
 std::ostream& operator<<(std::ostream& os, const Vec& v);
 std::ostream& operator<<(std::ostream& os, const Matrix& m);
 
-
+double average(const Vec& v);
 Matrix transpose(const Matrix& m);
+Matrix clipMatrix(const Matrix& m, const double& bound);
+
+
 Matrix randomMatrix(size_t rows, size_t cols);

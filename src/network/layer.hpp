@@ -8,9 +8,13 @@ class DenseLayer {
 	Matrix output;
 
 	DenseLayer(int inputs, int neurons);
-	void forward(const Matrix& inputs);
+	Matrix forward(const Matrix& inputs);
+	double calculate(const Matrix& output, const Vec& truth);
 };
 
 Matrix reluActivation(const Matrix& m);
 Matrix softmaxActivation(const Matrix& m);
+
+Vec lossCCE(const Matrix& m, const Vec& truth);
+Vec accurate(const Matrix& m, const Vec& truth);
 
