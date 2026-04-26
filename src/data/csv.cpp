@@ -1,4 +1,5 @@
 #include "csv.hpp"
+#include <iostream>
 #include <string>
 #include <filesystem>
 #include <fstream>
@@ -36,12 +37,14 @@ Data inputData(std::string path) {
 	Matrix info(data.rows(), data.cols() - 1);
 	Vec target(data.rows());
 
+	// tailored for mnist data set!
+	
     for (size_t i = 0; i < rows; i++) {
         for (size_t j = 0; j < cols; j++) {
-			if (j < cols - 1) {
-				info[i][j] = data[i][j];
-			} else {
+			if (j == 0) {
 				target[i] = data[i][j];
+			} else {
+				info[i][j - 1] = data[i][j];
 			}
 		}
 	}

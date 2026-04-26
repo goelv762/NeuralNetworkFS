@@ -11,15 +11,8 @@ file(GLOB_RECURSE MATH src/math/*.cpp)
 file(GLOB_RECURSE NETWORK src/network/*.cpp)
 file(GLOB_RECURSE DATA src/data/*.cpp)
 
-set(VENV_PYTHON ${CMAKE_SOURCE_DIR}/venv/bin/python)
-set(SCRIPT ${CMAKE_SOURCE_DIR}/data/spiral.py)
-
-file(COPY "${CMAKE_SOURCE_DIR}/data" DESTINATION "${CMAKE_BINARY_DIR}")
-
-add_custom_target(genData ALL
-    COMMAND ${VENV_PYTHON} ${SCRIPT}
-	WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-)
+file(COPY "${CMAKE_SOURCE_DIR}/training" DESTINATION "${CMAKE_BINARY_DIR}")
+file(COPY "${CMAKE_SOURCE_DIR}/testing" DESTINATION "${CMAKE_BINARY_DIR}")
 
 add_library(math SHARED ${MATH})
 set_target_properties(math PROPERTIES LINK_FLAGS "-static-libgcc -static-libstdc++")
@@ -31,5 +24,4 @@ add_library(data SHARED ${DATA})
 set_target_properties(data PROPERTIES LINK_FLAGS "-static-libgcc -static-libstdc++")
 
 add_executable(${EXEC} src/main.cpp)
-add_dependencies(${EXEC} genData)
 target_link_libraries(${EXEC} math network data)

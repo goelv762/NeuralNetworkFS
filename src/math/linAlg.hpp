@@ -54,14 +54,20 @@ Vec operator+(const Vec& v1, const Vec& v2);
 Vec& operator+=(Vec& v1, const Vec& v2);
 Vec operator-(const Vec& v1, const Vec& v2);
 Vec& operator-=(Vec& v1, const Vec& v2);
+Vec operator*(const double& c, const Vec& v);
+Vec operator*(const Vec& v, const double& c);
 double operator*(const Vec& v1, const Vec& v2);
 
 // matrix
 Matrix operator+(const Matrix& m1, const Matrix& m2);
+Matrix& operator+=(Matrix& m1, const Matrix& m2);
+Matrix operator-(const Matrix& m1, const Matrix& m2);
+Matrix& operator-=(Matrix& m1, const Matrix& m2);
 Matrix operator*(const Matrix& m1, const Matrix& m2);
 
 // matrix & something mix
 Matrix operator+(const Matrix& m, const Vec& v);
+Matrix operator+(const Matrix& m, const double& c);
 Matrix operator*(const Matrix& m, const double& c);
 Matrix operator*(const double& c, const Matrix& m);
 
@@ -69,9 +75,13 @@ Matrix operator*(const double& c, const Matrix& m);
 std::ostream& operator<<(std::ostream& os, const Vec& v);
 std::ostream& operator<<(std::ostream& os, const Matrix& m);
 
+double sum(const Vec& v);
 double average(const Vec& v);
 Matrix transpose(const Matrix& m);
 Matrix clipMatrix(const Matrix& m, const double& bound);
-
-
 Matrix randomMatrix(size_t rows, size_t cols);
+
+Vec matrixToVec(const Matrix& m);
+
+Vec sumRows(const Matrix& m);
+Matrix hadamard(const Matrix& m1, const Matrix& m2);
