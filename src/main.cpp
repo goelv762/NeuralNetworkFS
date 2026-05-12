@@ -1,23 +1,17 @@
+#include <chrono>
 #include <iostream>
 #include <numeric>
 #include <random>
 #include "math/linAlg.hpp"
 #include "network/layer.hpp"
+#include "data/dump.hpp"
+
 
 int main(int argc, char *argv[]) {
-	if (argc != 4) {
-		std::cout << "Usage: ./program [num_epochs] [num_batches] [batch size]" << std::endl;
+	if (argc != 3) {
+		std::cout << "Usage: ./program [num_epochs] [batch_size]" << std::endl;
 		exit(-1);
 	}
-	float lr = 0.1f;
-    float lambda = 0.0001f;
-    int epochs = std::stoi(argv[1]);
-    int numBatches = std::stoi(argv[2]);
-    int batchSize = std::stoi(argv[3]);
-	
-	std::cout << "Preforming " << epochs << " epochs with " << numBatches << " batches of size " << batchSize << "." << std::endl;
-
-    srand(time(NULL));
 
     Data trainingData = inputData("./training/mnist_train.csv");
     trainingData.info = trainingData.info * (1.0f / 255.0f);
@@ -25,10 +19,18 @@ int main(int argc, char *argv[]) {
     Data testingData = inputData("./testing/mnist_test.csv");
     testingData.info = testingData.info * (1.0f / 255.0f);
 
+    int epochs = std::stoi(argv[1]);
+    int batchSize = std::stoi(argv[2]);
+	int numBatches = trainingData.info.rows() / batchSize;
+
+	
+	std::cout << "Preforming " << epochs << " epochs with " << numBatches << " batches of size " << batchSize << "." << std::endl;
+
 	NeuralNetwork nn({784, 128, 64, 10});
 
     int m = trainingData.info.rows();
     
+    srand(time(NULL));
 	std::random_device rd;
     std::default_random_engine rng(rd());
 
@@ -51,11 +53,16 @@ int main(int argc, char *argv[]) {
 
             // Forward
             nn.step(batchX, y, 10);
-
+			std::cout << "\rEpoch: " << epoch + 1 << " Progress: " << b << " / " << numBatches << std::flush;
         }
+
+		std::cout << std::endl;
     }
 
-	nn.test(testingData);
+	double acc = nn.test(testingData);
+	const auto p1 = std::chrono::system_clock::now();
+	int time = std::chrono::duration_cast<std::chrono::seconds>( p1.time_since_epoch()).count();
+	dumpNN("./models/" + std::to_string(acc) + "-" + std::to_string(time) + ".dat", nn);
 
     return 0;
 }

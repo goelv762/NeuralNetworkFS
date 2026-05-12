@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../math/linAlg.hpp"
 
 struct Data {

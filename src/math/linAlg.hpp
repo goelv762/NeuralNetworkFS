@@ -5,47 +5,51 @@
 #include <vector>
 
 struct Vec {
-	std::vector<double> data;
+	std::vector<double> info;
 
     Vec() = default;
-	Vec(size_t size) : data(size) {}
-    Vec(std::initializer_list<double> init) : data(init) {}
+	Vec(size_t size) : info(size) {}
+    Vec(std::initializer_list<double> init) : info(init) {}
 
-    double& operator[](size_t i) { return data[i]; }
-    const double& operator[](size_t i) const { return data[i]; }
+    double& operator[](size_t i) { return info[i]; }
+    const double& operator[](size_t i) const { return info[i]; }
 
-    size_t size() const { return data.size(); }
+    size_t size() const { return info.size(); }
+	const double* data() const { return info.data(); } 
 
-    auto begin() { return data.begin(); }
-    auto end()   { return data.end(); }
+    auto begin() { return info.begin(); }
+    auto end()   { return info.end(); }
 
-    auto begin() const { return data.begin(); }
-    auto end()   const { return data.end(); }
+    auto begin() const { return info.begin(); }
+    auto end()   const { return info.end(); }
 
-	void push_back(double newData) { data.push_back(newData); }
+	void push_back(double newData) { info.push_back(newData); }
 };
 
 
 struct Matrix {
-    std::vector<Vec> data;
+    std::vector<Vec> info;
 
     Matrix() = default;
-	Matrix(std::initializer_list<Vec> init) : data(init) {}
-    Matrix(size_t rows, size_t cols) : data(rows, Vec(cols)) {}
+	Matrix(std::initializer_list<Vec> init) : info(init) {}
+    Matrix(size_t rows, size_t cols) : info(rows, Vec(cols)) {}
 
-    Vec& operator[](size_t i) { return data[i]; }
-    const Vec& operator[](size_t i) const { return data[i]; }
+    Vec& operator[](size_t i) { return info[i]; }
+    const Vec& operator[](size_t i) const { return info[i]; }
 
-    size_t rows() const { return data.size(); }
-    size_t cols() const { return data.empty() ? 0 : data[0].size(); }
+    size_t rows() const { return info.size(); }
+    size_t cols() const { return info.empty() ? 0 : info[0].size(); }
 
-	auto begin() { return data.begin(); }
-    auto end()   { return data.end(); }
+	// assume that all rows are same length (as a matrix should)
+	size_t size() const { return info.size() * info[0].size(); }
 
-    auto begin() const { return data.begin(); }
-    auto end()   const { return data.end(); }
+	auto begin() { return info.begin(); }
+    auto end()   { return info.end(); }
 
-	void push_back(Vec newData) { data.push_back(newData); }
+    auto begin() const { return info.begin(); }
+    auto end()   const { return info.end(); }
+
+	void push_back(Vec newData) { info.push_back(newData); }
 };
 
 

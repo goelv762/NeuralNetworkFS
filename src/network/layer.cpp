@@ -14,7 +14,7 @@ Matrix DenseLayer::forward(const Matrix& inputs) {
 	return z;
 }
 
-NeuralNetwork::NeuralNetwork(std::vector<int> neuronsVector) {
+NeuralNetwork::NeuralNetwork(std::vector<int> neuronsVector) : nv(neuronsVector) {
 	for (size_t i = 0; i < neuronsVector.size() - 1; i++) {
 		layers.emplace_back(neuronsVector[i], neuronsVector[i + 1]);
 	}
@@ -71,10 +71,11 @@ void NeuralNetwork::update() {
 	}
 }
 
-void NeuralNetwork::test(const Data& testingData) {
+double NeuralNetwork::test(const Data& testingData) {
 	forward(testingData.info);
 	double testAcc = average(accurate(layers[layerCount - 1].output, testingData.target));
 	std::cout << "Test Accuracy: " << testAcc * 100 << "%" << std::endl;
+	return testAcc;
 }
 
 // used for the hidden layers

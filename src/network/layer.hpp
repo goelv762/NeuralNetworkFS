@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../math/linAlg.hpp"
 #include "../data/csv.hpp"
 #include <cstdint>
@@ -26,11 +28,12 @@ class DenseLayer {
 
 class NeuralNetwork {
 	public:
+	std::vector<int> nv; // for dumping
 	std::vector<DenseLayer> layers;
 
 	NeuralNetwork(std::vector<int> neuronsVector);
 	void step(const Matrix& inputs, const Matrix& y, uint32_t batchSize);
-	void test(const Data& testingData);
+	double test(const Data& testingData);
 
 	size_t layerCount;
 
@@ -38,6 +41,11 @@ class NeuralNetwork {
 	void backprop(const Matrix& y);
 	void gradient(const Matrix& inputs, uint32_t batchSize);
 	void update();
+};
+
+struct layerData {
+	Matrix weights;
+	Vec biases;
 };
 
 Matrix reluActivation(const Matrix& m);

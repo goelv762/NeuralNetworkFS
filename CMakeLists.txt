@@ -13,6 +13,7 @@ file(GLOB_RECURSE DATA src/data/*.cpp)
 
 file(COPY "${CMAKE_SOURCE_DIR}/training" DESTINATION "${CMAKE_BINARY_DIR}")
 file(COPY "${CMAKE_SOURCE_DIR}/testing" DESTINATION "${CMAKE_BINARY_DIR}")
+file(COPY "${CMAKE_SOURCE_DIR}/models" DESTINATION "${CMAKE_BINARY_DIR}")
 
 add_library(math SHARED ${MATH})
 set_target_properties(math PROPERTIES LINK_FLAGS "-static-libgcc -static-libstdc++")
